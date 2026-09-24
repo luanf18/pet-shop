@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pet Shop Amigo Fiel | Loja Online</title>
+  <!-- Font Awesome para ícones -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* ===== RESET E VARIÁVEIS ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+    }
+
+    :root {
+      --primary: #2c7a4d;
+      --primary-dark: #1e5a37;
+      --secondary: #f9b23f;
+      --accent: #e67e22;
+      --light-bg: #fefaf5;
+      --dark-text: #2d3e2f;
+      --gray: #6b7b6b;
+      --white: #ffffff;
+      --shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+      --radius: 24px;
+      --radius-sm: 16px;
+    }
+
+    body {
+      background-color: var(--light-bg);
+      color: var(--dark-text);
+      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      background-color: var(--white);
+      box-shadow: var(--shadow);
+      padding: 1rem 5%;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 4px solid var(--secondary);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .logo i {
+      color: var(--secondary);
+      font-size: 2.2rem;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--dark-text);
+      font-weight: 600;
+      transition: 0.2s;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    nav a:hover {
+      color: var(--primary);
+    }
+
+    .cart-icon {
+      background: var(--primary);
+      color: white;
+      padding: 0.6rem 1.2rem;
+      border-radius: 40px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: 0.2s;
+      cursor: pointer;
+    }
+
+    .cart-icon:hover {
+      background: var(--primary-dark);
+      transform: scale(1.02);
+    }
+
+    .cart-count {
+      background: var(--secondary);
+      color: var(--dark-text);
+      border-radius: 30px;
+      padding: 2px 10px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-left: 5px;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      background: linear-gradient(135deg, #e5f4e9 0%, #fef3e2 100%);
+      padding: 2.5rem 5%;
+      border-radius: 0 0 40px 40px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+    }
+
+    .hero-text {
+      max-width: 550px;
+    }
+
+    .hero-text h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--primary-dark);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .hero-text h1 i {
+      color: var(--secondary);
+    }
+
+    .hero-text p {
+      font-size: 1.2rem;
+      color: var(--gray);
+      margin-bottom: 2rem;
+    }
+
+    .btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 1rem 2.5rem;
+      border-radius: 60px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.25s;
+      box-shadow: 0 8px 16px rgba(44, 122, 77, 0.25);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 20px rgba(44, 122, 77, 0.3);
+    }
+
+    .hero-img {
+      font-size: 8rem;
+      line-height: 1;
+      filter: drop-shadow(0 10px 10px rgba(0, 0, 0, 0.1));
+      user-select: none;
+    }
+
+    /* ===== TÍTULOS ===== */
+    .section-title {
+      text-align: center;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin: 3rem 0 2rem;
+      position: relative;
+    }
+
+    .section-title::after {
+      content: "🐾";
+      font-size: 1.8rem;
+      display: block;
+      margin-top: 5px;
+      opacity: 0.7;
+    }
+
+    /* ===== PRODUTOS GRID ===== */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 2rem;
+      padding: 0 5% 3rem;
+    }
+
+    .product-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 1.5rem 1rem 1.8rem;
+      box-shadow: var(--shadow);
+      transition: 0.3s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      border: 1px solid #f0e7dc;
+    }
+
+    .product-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 18px 30px rgba(0, 0, 0, 0.08);
+      border-color: var(--secondary);
+    }
+
+    .product-emoji {
+      font-size: 4.5rem;
+      margin-bottom: 0.8rem;
+      filter: drop-shadow(2px 6px 6px rgba(0, 0, 0, 0.1));
+    }
+
+    .product-card h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 0.3rem;
+    }
+
+    .product-desc {
+      font-size: 0.9rem;
+      color: var(--gray);
+      margin-bottom: 0.8rem;
+      min-height: 2.5rem;
+    }
+
+    .product-price {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 1.2rem;
+    }
+
+    .product-price small {
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: var(--gray);
+      text-decoration: line-through;
+      margin-left: 5px;
+    }
+
+    .btn-add {
+      background: var(--secondary);
+      color: var(--dark-text);
+      border: none;
+      padding: 0.8rem 1.8rem;
+      border-radius: 40px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: auto;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .btn-add:hover {
+      background: var(--accent);
+      color: white;
+    }
+
+    .btn-add i {
+      font-size: 1rem;
+    }
+
+    /* ===== CARRINHO MODAL ===== */
+    .cart-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: 0.25s;
+    }
+
+    .cart-modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .cart-modal {
+      background: var(--white);
+      width: 90%;
+      max-width: 550px;
+      max-height: 85vh;
+      border-radius: 32px;
+      padding: 2rem 1.8rem;
+      box-shadow: 0 30px 50px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      transform: scale(0.9);
+      transition: 0.3s;
+      border: 4px solid var(--secondary);
+    }
+
+    .cart-modal-overlay.active .cart-modal {
+      transform: scale(1);
+    }
+
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .cart-header h2 {
+      font-size: 1.8rem;
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .close-cart {
+      background: none;
+      border: none;
+      font-size: 2rem;
+      cursor: pointer;
+      color: var(--gray);
+      transition: 0.2s;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+
+    .close-cart:hover {
+      background: #f0f0f0;
+      color: var(--accent);
+    }
+
+    .cart-items {
+      flex: 1;
+      overflow-y: auto;
+      margin-bottom: 1.5rem;
+      padding-right: 5px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-height: 40vh;
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #f9f7f3;
+      padding: 0.8rem 1rem;
+      border-radius: 20px;
+      gap: 10px;
+      border-left: 6px solid var(--secondary);
+    }
+
+    .cart-item-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .cart-item-emoji {
+      font-size: 2rem;
+    }
+
+    .cart-item-title {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--dark-text);
+    }
+
+    .cart-item-price {
+      font-weight: 700;
+      color: var(--accent);
+      font-size: 1rem;
+    }
+
+    .cart-item-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cart-item-actions button {
+      background: white;
+      border: 1px solid #ddd;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.2s;
+      color: var(--dark-text);
+    }
+
+    .cart-item-actions button:hover {
+      background: var(--secondary);
+      border-color: var(--secondary);
+    }
+
+    .cart-item-qty {
+      min-width: 24px;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .remove-item {
+      background: none;
+      border: none;
+      color: #c0392b;
+      cursor: pointer;
+      font-size: 1.2rem;
+      padding: 5px;
+      border-radius: 50%;
+      transition: 0.2s;
+    }
+
+    .remove-item:hover {
+      background: #ffe5e5;
+    }
+
+    .cart-total {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.6rem;
+      font-weight: 800;
+      padding: 1rem 0;
+      border-top: 2px dashed #ddd;
+      margin-top: 0.5rem;
+      color: var(--primary-dark);
+    }
+
+    .cart-total span:last-child {
+      color: var(--accent);
+    }
+
+    .cart-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .cart-actions .btn {
+      flex: 1;
+      justify-content: center;
+      padding: 0.9rem;
+      font-size: 1rem;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+      box-shadow: none;
+    }
+
+    .btn-outline:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    .empty-cart-message {
+      text-align: center;
+      color: var(--gray);
+      padding: 2rem 1rem;
+      font-size: 1.1rem;
+    }
+
+    .empty-cart-message i {
+      font-size: 3rem;
+      display: block;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--primary-dark);
+      color: #d4e6d4;
+      padding: 2.5rem 5% 1.5rem;
+      margin-top: auto;
+      border-radius: 40px 40px 0 0;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-col h4 {
+      color: var(--secondary);
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .footer-col p, .footer-col a {
+      color: #cfe2cf;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+    }
+
+    .footer-col a:hover {
+      color: var(--secondary);
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .social-icons a {
+      background: rgba(255, 255, 255, 0.1);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      transition: 0.2s;
+    }
+
+    .social-icons a:hover {
+      background: var(--secondary);
+      color: var(--primary-dark);
+      transform: translateY(-3px);
+    }
+
+    .copyright {
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding-top: 1.5rem;
+      font-size: 0.9rem;
+      color: #a8c0a8;
+    }
+
+    /* ===== RESPONSIVO ===== */
+    @media (max-width: 750px) {
+      header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+      }
+      nav {
+        justify-content: center;
+      }
+      .hero {
+        flex-direction: column;
+        text-align: center;
+        gap: 1.5rem;
+        padding-bottom: 2rem;
+      }
+      .hero-text h1 {
+        font-size: 2.2rem;
+      }
+      .hero-img {
+        font-size: 6rem;
+      }
+      .cart-modal {
+        padding: 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .logo {
+        font-size: 1.5rem;
+      }
+      .logo i {
+        font-size: 1.8rem;
+      }
+      .cart-item {
+        flex-wrap: wrap;
+      }
+      .cart-item-actions {
+        margin-left: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <i class="fas fa-paw"></i>
+      Pet Shop <span>Amigo Fiel</span>
+    </div>
+    <nav>
+      <a href="#"><i class="fas fa-home"></i> Início</a>
+      <a href="#"><i class="fas fa-dog"></i> Produtos</a>
+      <a href="#"><i class="fas fa-phone-alt"></i> Contato</a>
+      <div class="cart-icon" id="cartIcon">
+        <i class="fas fa-shopping-cart"></i>
+        <span>Carrinho</span>
+        <span class="cart-count" id="cartCount">0</span>
+      </div>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-text">
+      <h1>Cuide do seu <i>melhor amigo</i> com amor 🐶</h1>
+      <p>Ração premium, brinquedos, higiene e muito mais. Tudo o que seu pet precisa em um só lugar.</p>
+      <button class="btn" onclick="document.querySelector('.products-grid').scrollIntoView({behavior:'smooth'})">
+        <i class="fas fa-bone"></i> Ver produtos
+      </button>
+    </div>
+    <div class="hero-img">🐕🐈</div>
+  </section>
+
+  <!-- PRODUTOS -->
+  <h2 class="section-title">Nossos produtos</h2>
+  <div class="products-grid" id="productsGrid">
+    <!-- Os produtos são gerados pelo JS -->
+  </div>
+
+  <!-- CARRINHO MODAL -->
+  <div class="cart-modal-overlay" id="cartModalOverlay">
+    <div class="cart-modal">
+      <div class="cart-header">
+        <h2><i class="fas fa-shopping-basket"></i> Seu Carrinho</h2>
+        <button class="close-cart" id="closeCartBtn"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="cart-items" id="cartItemsContainer">
+        <!-- Itens do carrinho aparecerão aqui -->
+        <div class="empty-cart-message">
+          <i class="fas fa-shopping-cart"></i>
+          Seu carrinho está vazio.
+        </div>
+      </div>
+      <div class="cart-total">
+        <span>Total:</span>
+        <span id="cartTotalPrice">R$ 0,00</span>
+      </div>
+      <div class="cart-actions">
+        <button class="btn btn-outline" id="clearCartBtn"><i class="fas fa-trash-alt"></i> Limpar</button>
+        <button class="btn" id="checkoutBtn"><i class="fas fa-check"></i> Finalizar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-col">
+        <h4>Pet Shop Amigo Fiel</h4>
+        <p><i class="fas fa-map-pin"></i> Av. dos Bichos, 123 - São Paulo</p>
+        <p><i class="fas fa-phone"></i> (11) 99999-8888</p>
+        <p><i class="fas fa-envelope"></i> contato@amigofiel.com</p>
+      </div>
+      <div class="footer-col">
+        <h4>Horário</h4>
+        <p>Seg a Sex: 8h - 20h</p>
+        <p>Sáb: 9h - 18h</p>
+        <p>Dom: 10h - 14h</p>
+      </div>
+      <div class="footer-col">
+        <h4>Redes Sociais</h4>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-whatsapp"></i></a>
+        </div>
+        <p style="margin-top: 1rem;">Siga-nos para dicas e promoções!</p>
+      </div>
+    </div>
+    <div class="copyright">
+      &copy; 2025 Pet Shop Amigo Fiel. Todos os direitos reservados. Feito com <i class="fas fa-heart" style="color: #f9b23f;"></i> para os pets.
+    </div>
+  </footer>
+
+  <!-- JAVASCRIPT -->
+  <script>
+    (function() {
+      // ===== PRODUTOS (catálogo) =====
+      const products = [
+        { id: 1, name: 'Ração Premium', desc: 'Sabor frango e arroz 10kg', price: 129.90, emoji: '🥫', oldPrice: 159.90 },
+        { id: 2, name: 'Brinquedo Osso', desc: 'Borracha resistente', price: 34.90, emoji: '🦴', oldPrice: null },
+        { id: 3, name: 'Cama Confort', desc: 'Tamanho M, lavável', price: 89.90, emoji: '🛏️', oldPrice: 119.90 },
+        { id: 4, name: 'Shampoo Neutro', desc: '500ml, hipoalergênico', price: 27.50, emoji: '🧴', oldPrice: null },
+        { id: 5, name: 'Coleira Ajustável', desc: 'Nylon reforçado', price: 45.00, emoji: '🦮', oldPrice: 59.90 },
+        { id: 6, name: 'Petiscos Naturais', desc: 'Pacote 200g', price: 19.90, emoji: '🍖', oldPrice: 24.90 },
+        { id: 7, name: 'Arranhador Gato', desc: 'Sisal e plataforma', price: 79.90, emoji: '🐱', oldPrice: null },
+        { id: 8, name: 'Comedouro Duplo', desc: 'Inox, anti-derrapante', price: 42.90, emoji: '🥣', oldPrice: 54.90 }
+      ];
+
+      // ===== ESTADO DO CARRINHO =====
+      let cart = []; // array de { id, name, price, emoji, quantity }
+
+      // ===== ELEMENTOS DOM =====
+      const productsGrid = document.getElementById('productsGrid');
+      const cartIcon = document.getElementById('cartIcon');
+      const cartModalOverlay = document.getElementById('cartModalOverlay');
+      const closeCartBtn = document.getElementById('closeCartBtn');
+      const cartItemsContainer = document.getElementById('cartItemsContainer');
+      const cartCountSpan = document.getElementById('cartCount');
+      const cartTotalPriceSpan = document.getElementById('cartTotalPrice');
+      const clearCartBtn = document.getElementById('clearCartBtn');
+      const checkoutBtn = document.getElementById('checkoutBtn');
+
+      // ===== RENDERIZAR PRODUTOS =====
+      function renderProducts() {
+        productsGrid.innerHTML = '';
+        products.forEach(product => {
+          const card = document.createElement('div');
+          card.className = 'product-card';
+          card.innerHTML = `
+            <div class="product-emoji">${product.emoji}</div>
+            <h3>${product.name}</h3>
+            <div class="product-desc">${product.desc}</div>
+            <div class="product-price">
+              R$ ${product.price.toFixed(2).replace('.', ',')}
+              ${product.oldPrice ? `<small>R$ ${product.oldPrice.toFixed(2).replace('.', ',')}</small>` : ''}
+            </div>
+            <button class="btn-add" data-id="${product.id}">
+              <i class="fas fa-cart-plus"></i> Adicionar
+            </button>
+          `;
+          productsGrid.appendChild(card);
+        });
+
+        // Adiciona event listeners aos botões "Adicionar"
+        document.querySelectorAll('.btn-add').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const id = Number(e.currentTarget.getAttribute('data-id'));
+            addToCart(id);
+          });
+        });
+      }
+
+      // ===== ADICIONAR AO CARRINHO =====
+      function addToCart(productId) {
+        const product = products.find(p => p.id === productId);
+        if (!product) return;
+
+        const existingItem = cart.find(item => item.id === productId);
+        if (existingItem) {
+          existingItem.quantity += 1;
+        } else {
+          cart.push({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            emoji: product.emoji,
+            quantity: 1
+          });
+        }
+        updateCartUI();
+        // Feedback visual opcional: animar o ícone do carrinho
+        cartIcon.style.transform = 'scale(1.1)';
+        setTimeout(() => cartIcon.style.transform = 'scale(1)', 150);
+      }
+
+      // ===== ATUALIZAR INTERFACE DO CARRINHO =====
+      function updateCartUI() {
+        // Atualiza contador
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        cartCountSpan.textContent = totalItems;
+
+        // Atualiza lista de itens
+        renderCartItems();
+
+        // Atualiza total
+        const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        cartTotalPriceSpan.textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+      }
+
+      // ===== RENDERIZAR ITENS DO CARRINHO =====
+      function renderCartItems() {
+        if (cart.length === 0) {
+          cartItemsContainer.innerHTML = `
+            <div class="empty-cart-message">
+              <i class="fas fa-shopping-cart"></i>
+              Seu carrinho está vazio.
+            </div>
+          `;
+          return;
+        }
+
+        cartItemsContainer.innerHTML = '';
+        cart.forEach(item => {
+          const itemEl = document.createElement('div');
+          itemEl.className = 'cart-item';
+          itemEl.innerHTML = `
+            <div class="cart-item-info">
+              <span class="cart-item-emoji">${item.emoji}</span>
+              <div>
+                <div class="cart-item-title">${item.name}</div>
+                <div class="cart-item-price">R$ ${item.price.toFixed(2).replace('.', ',')}</div>
+              </div>
+            </div>
+            <div class="cart-item-actions">
+              <button class="decrease-qty" data-id="${item.id}">−</button>
+              <span class="cart-item-qty">${item.quantity}</span>
+              <button class="increase-qty" data-id="${item.id}">+</button>
+              <button class="remove-item" data-id="${item.id}"><i class="fas fa-trash-alt"></i></button>
+            </div>
+          `;
+          cartItemsContainer.appendChild(itemEl);
+        });
+
+        // Eventos para os botões de quantidade e remover
+        document.querySelectorAll('.decrease-qty').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const id = Number(e.currentTarget.getAttribute('data-id'));
+            changeQuantity(id, -1);
+          });
+        });
+
+        document.querySelectorAll('.increase-qty').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const id = Number(e.currentTarget.getAttribute('data-id'));
+            changeQuantity(id, 1);
+          });
+        });
+
+        document.querySelectorAll('.remove-item').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const id = Number(e.currentTarget.getAttribute('data-id'));
+            removeItem(id);
+          });
+        });
+      }
+
+      // ===== ALTERAR QUANTIDADE =====
+      function changeQuantity(productId, delta) {
+        const item = cart.find(item => item.id === productId);
+        if (!item) return;
+
+        const newQty = item.quantity + delta;
+        if (newQty <= 0) {
+          removeItem(productId);
+        } else {
+          item.quantity = newQty;
+          updateCartUI();
+        }
+      }
+
+      // ===== REMOVER ITEM =====
+      function removeItem(productId) {
+        cart = cart.filter(item => item.id !== productId);
+        updateCartUI();
+      }
+
+      // ===== LIMPAR CARRINHO =====
+      function clearCart() {
+        if (cart.length === 0) return;
+        if (confirm('Tem certeza que deseja limpar todo o carrinho?')) {
+          cart = [];
+          updateCartUI();
+        }
+      }
+
+      // ===== FINALIZAR COMPRA =====
+      function checkout() {
+        if (cart.length === 0) {
+          alert('Seu carrinho está vazio. Adicione produtos antes de finalizar.');
+          return;
+        }
+        const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        alert(`Pedido finalizado com sucesso! 🎉\nTotal: R$ ${total.toFixed(2).replace('.', ',')}\n\nObrigado por comprar no Pet Shop Amigo Fiel!`);
+        cart = [];
+        updateCartUI();
+        // Fecha o modal
+        cartModalOverlay.classList.remove('active');
+      }
+
+      // ===== ABRIR / FECHAR MODAL =====
+      function openCartModal() {
+        cartModalOverlay.classList.add('active');
+        // Atualiza a UI ao abrir, garantindo consistência
+        updateCartUI();
+      }
+
+      function closeCartModal() {
+        cartModalOverlay.classList.remove('active');
+      }
+
+      // ===== EVENT LISTENERS =====
+      function setupEventListeners() {
+        // Abrir carrinho
+        cartIcon.addEventListener('click', openCartModal);
+
+        // Fechar carrinho
+        closeCartBtn.addEventListener('click', closeCartModal);
+
+        // Fechar ao clicar fora do modal
+        cartModalOverlay.addEventListener('click', (e) => {
+          if (e.target === cartModalOverlay) {
+            closeCartModal();
+          }
+        });
+
+        // Limpar carrinho
+        clearCartBtn.addEventListener('click', clearCart);
+
+        // Finalizar compra
+        checkoutBtn.addEventListener('click', checkout);
+
+        // Fechar com tecla ESC
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && cartModalOverlay.classList.contains('active')) {
+            closeCartModal();
+          }
+        });
+      }
+
+      // ===== INICIALIZAÇÃO =====
+      function init() {
+        renderProducts();
+        // Carrinho começa vazio (poderia carregar do localStorage, mas mantemos simples)
+        cart = [];
+        updateCartUI();
+        setupEventListeners();
+      }
+
+      // Executa quando o DOM estiver pronto
+      document.addEventListener('DOMContentLoaded', init);
+    })();
+  </script>
+</body>
+</html>
